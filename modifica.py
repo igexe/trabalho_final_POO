@@ -1,26 +1,15 @@
-from mysql.connector import Error
-from database_conect import db_conect
 from senha import p
-import pandas as pd
+from database_conect import db_conect
+from consultas import execute_query
 from tkinter import *
 from tkinter import ttk
+from le_dados import read_query as rq
+import pandas as pd
 
-def read_query(connection,query):
-    cursor=connection.cursor()
-    result=None
-    try:
-        cursor.execute(query)
-        result=cursor.fetchall()
-        return result
-    except Error as err:
-        print(f"Error: '{err}'")
-
-
-# função que le todos os dados da tabela
-def read_all():
+def mod():
     janela=Tk()
-    janela.title('busca')
-    
+    janela.title('modifica estoque')
+
 
     codigo = Label(janela, text='codigo')
     codigo.grid(row=0, column=0)
@@ -84,8 +73,6 @@ def read_all():
     tabela.column('idade',width=50)
     tabela.column('valor',width=75)
     tabela.column('quantidade',width=100)
-
-    tabela.grid(row=2, column=3, columnspan=2)
 
 
     def busca():
@@ -155,7 +142,7 @@ def read_all():
         '''
 
         connection=db_conect('localhost','root',p(),'estoque')
-        results=read_query(connection,q)
+        results=rq(connection,q)
 
         for x in results:
             db.append(x)
@@ -237,8 +224,127 @@ def read_all():
                 tabela.insert('','end',text=x['codigo'],values=(x['marca'],x['referencia'],x['sexo'],x['idade'],x['valor'],x['quantidade']))
 
 
-    botao=ttk.Button(janela,text='buscar',command=busca)
+    botao=Button(janela,text='buscar',command=busca)
     botao.grid(row=1,column=7)
 
+    tabela.grid(row=2, column=3, columnspan=2)
+
+
+    def modifica():
+
+        global codigo,mod_marca,mod_ref,mod_sexo,mod_idade,mod_valor,mod_quantidade
+
+        item_selecionado=tabela.selection()[0]
+        codigo=tabela.item(item_selecionado,'text')
+
+        mod_estoque=Tk()
+        mod_estoque.title('modifica item')
+
+        l_marca=Label(mod_estoque,text='marca')
+        l_marca.grid(row=0,column=0)
+        mod_marca=Entry(mod_estoque)
+        mod_marca.grid(row=0,column=1)
+
+
+        l_ref=Label(mod_estoque,text='referencia')
+        l_ref.grid(row=0,column=2)
+        mod_ref=Entry(mod_estoque)
+        mod_ref.grid(row=0,column=3)
+
+
+        l_sexo=Label(mod_estoque,text='sexo')
+        l_sexo.grid(row=0,column=4)
+        mod_sexo=Entry(mod_estoque)
+        mod_sexo.grid(row=0,column=5)
+
+
+        l_idade=Label(mod_estoque,text='idade')
+        l_idade.grid(row=0,column=6)
+        mod_idade=Entry(mod_estoque)
+        mod_idade.grid(row=0,column=7)
+
+
+        l_valor=Label(mod_estoque,text='valor')
+        l_valor.grid(row=1,column=2)
+        mod_valor=Entry(mod_estoque)
+        mod_valor.grid(row=1,column=3)
+
+
+        l_quantidade=Label(mod_estoque,text='quantidade')
+        l_quantidade.grid(row=1,column=4)
+        mod_quantidade=Entry(mod_estoque)
+        mod_quantidade.grid(row=1,column=5)
+
+        def muda():
+            global codigo,mod_marca,mod_ref,mod_sexo,mod_idade,mod_valor,mod_quantidade
+            ok=False
+
+            confirma=Label(mod_estoque,text='campos modificados com sucesso',fg='green')
+
+            connection=db_conect('localhost','root',p(),'estoque')
+
+            if mod_marca.get()=='':
+                pass
+            else:
+                up="update sapato set marca='"+str(mod_marca.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if mod_ref.get()=='':
+                pass
+            else:
+                up="update sapato set referencia='"+str(mod_ref.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if mod_sexo.get()=='':
+                pass
+            else:
+                up="update sapato set sexo='"+str(mod_sexo.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if mod_idade.get()=='':
+                pass
+            else:
+                up="update sapato set idade='"+str(mod_idade.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if mod_valor.get()=='':
+                pass
+            else:
+                up="update sapato set valor='"+str(mod_valor.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if mod_quantidade.get()=='':
+                pass
+            else:
+                up="update sapato set quantidade='"+str(mod_quantidade.get())+"' where codigo="+str(codigo)+";"
+                execute_query(connection,up)
+                ok=True
+
+            if ok==True:
+                confirma.grid(row=2,column=3,columnspan=2)
+
+        mod_prod=Button(mod_estoque,text='salvar',command=muda)
+        mod_prod.grid(row=3,column=3)
+
+
+        mod_estoque.mainloop()
+
+    mod_botao=Button(janela,text='modificar',command=modifica)
+    mod_botao.grid(row=3,column=3)
 
     janela.mainloop()
+
+
+
+# up= """
+# update sapato
+# set referencia = 'novo'
+# where codigo=1;
+# """
+
+# 
