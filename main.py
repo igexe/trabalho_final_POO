@@ -1,4 +1,3 @@
-# para a execução dos codigos a seguir são necessarios o mysql e fazer a instalação das bibliotecas MySQL Connector com o seguinte comando pip install mysql-connector-python e a biblioteca pandas com o seguinte comando pip install pandas
 from inser import *
 from le_dados import *
 from cria_database_tabela import *
@@ -9,7 +8,7 @@ from tkinter import *
 # cria()
 
 janela=Tk()
-janela.title=('menu')
+janela.title('menu')
 
 inserir=Button(janela,text='inserir',command=insere)
 inserir.grid(row=0,column=0)

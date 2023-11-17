@@ -338,13 +338,3 @@ def mod():
     mod_botao.grid(row=3,column=3)
 
     janela.mainloop()
-
-
-
-# up= """
-# update sapato
-# set referencia = 'novo'
-# where codigo=1;
-# """
-
-# 

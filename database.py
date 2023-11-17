@@ -1,4 +1,3 @@
-import mysql.connector
 from mysql.connector import Error
 
 # metodo para a criação de um database

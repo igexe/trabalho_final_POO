@@ -1,3 +1,3 @@
 def p():
-    senha='badwolf'
+    senha='password'
     return senha

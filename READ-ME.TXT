@@ -1,0 +1,12 @@
+Para a execução dos codigos é necessario a instalação das seguintes bibliotecas
+
+MySQL Connector para a instalação segue o seguinte comando para windows
+pip install mysql-connector-python
+
+pandas para a instalação segue o seguinte comando para windows
+pip install pandas
+
+tambem é necessario que o mysql workbench esteja instalado e a configuração do localhost 
+e para rodar o codigo corretamente é necessario entrar no arquivo senha.py
+ e modificar o valor da variavel senha para sua senha de conexão com o localhost 
+trocando a string password para sua senha como uma string
